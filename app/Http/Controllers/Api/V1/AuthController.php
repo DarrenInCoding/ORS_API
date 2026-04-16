@@ -71,7 +71,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Logout current device.
+     * Logout current device. // text it
      */
     public function logout(Request $request): JsonResponse
     {
