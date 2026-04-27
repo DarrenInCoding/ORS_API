@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -96,7 +97,7 @@ class UserController extends Controller
     public function destroy(User $user): JsonResponse
     {
         // Prevent self-deletion
-        if ($user->id === auth()->id()) {
+        if ($user->id === Auth::id()) {
             return $this->error('You cannot delete your own account', 422);
         }
 

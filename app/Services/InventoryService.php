@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\InventoryType;
 use App\Models\InventoryRecord;
 use App\Models\RecycleOrder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class InventoryService
@@ -31,7 +32,7 @@ class InventoryService
                 unit: $item->category->unit ?? 'kg',
                 notes: "From order #{$order->order_number}",
                 orderId: $order->id,
-                recordedBy: auth()->id(),
+                recordedBy: Auth::id(),
             );
         }
     }

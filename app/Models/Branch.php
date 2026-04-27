@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\InventoryRecord;
+use App\Models\RecycleOrder;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;

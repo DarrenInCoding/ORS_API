@@ -3,7 +3,11 @@
 namespace App\Models;
 
 use App\Enums\UserRole;
-use Database\Factories\UserFactory;
+use App\Models\Branch;
+use App\Models\Notification;
+use App\Models\Payment;
+use App\Models\RecycleOrder;
+use App\Models\SocialAccount;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,7 +19,6 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     protected $fillable = [

@@ -13,7 +13,6 @@ use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
@@ -130,7 +129,7 @@ class AuthController extends Controller
     {
         $this->validateProvider($provider);
 
-        $url = Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
+        $url = $this->socialiteDriver($provider)->redirect()->getTargetUrl();
 
         return $this->success(['redirect_url' => $url]);
     }
@@ -143,7 +142,7 @@ class AuthController extends Controller
         $this->validateProvider($provider);
 
         try {
-            $socialUser = Socialite::driver($provider)->stateless()->user();
+            $socialUser = $this->socialiteDriver($provider)->user();
         } catch (\Exception $e) {
             return $this->error('Social authentication failed: ' . $e->getMessage(), 401);
         }
@@ -160,7 +159,7 @@ class AuthController extends Controller
         $this->validateProvider($provider);
 
         try {
-            $socialUser = Socialite::driver($provider)->stateless()->userFromToken($request->access_token);
+            $socialUser = $this->socialiteDriver($provider)->userFromToken($request->access_token);
         } catch (\Exception $e) {
             return $this->error('Invalid social token: ' . $e->getMessage(), 401);
         }
@@ -239,5 +238,19 @@ class AuthController extends Controller
         if (!in_array($provider, ['google', 'microsoft', 'apple'])) {
             abort(422, 'Invalid social provider. Supported: google, microsoft, apple');
         }
+    }
+
+    /**
+     * Get a Socialite driver and apply stateless mode when supported.
+     */
+    protected function socialiteDriver(string $provider)
+    {
+        $driver = Socialite::driver($provider);
+
+        if (is_callable([$driver, 'stateless'])) {
+            $driver = call_user_func([$driver, 'stateless']);
+        }
+
+        return $driver;
     }
 }

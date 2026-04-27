@@ -8,6 +8,7 @@ use App\Models\Notification;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
@@ -48,7 +49,7 @@ class NotificationController extends Controller
      */
     public function markAsRead(Notification $notification): JsonResponse
     {
-        if ($notification->user_id !== auth()->id()) {
+        if ($notification->user_id !== Auth::id()) {
             return $this->forbidden();
         }
 
@@ -72,7 +73,7 @@ class NotificationController extends Controller
      */
     public function destroy(Notification $notification): JsonResponse
     {
-        if ($notification->user_id !== auth()->id()) {
+        if ($notification->user_id !== Auth::id()) {
             return $this->forbidden();
         }
 

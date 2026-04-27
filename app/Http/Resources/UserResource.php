@@ -26,8 +26,8 @@ class UserResource extends JsonResource
                     'connected_at' => $account->created_at->toISOString(),
                 ]);
             }),
-            'managed_branch' => new BranchResource($this->whenLoaded('managedBranch')),
-            'assigned_branches' => BranchResource::collection($this->whenLoaded('assignedBranches')),
+            'managed_branch' => new \App\Http\Resources\BranchResource($this->whenLoaded('managedBranch')),
+            'assigned_branches' => \App\Http\Resources\BranchResource::collection($this->whenLoaded('assignedBranches')),
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
         ];

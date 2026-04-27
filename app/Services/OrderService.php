@@ -3,17 +3,17 @@
 namespace App\Services;
 
 use App\Enums\OrderStatus;
-use App\Enums\PaymentStatus;
 use App\Models\RecyclableCategory;
 use App\Models\RecycleOrder;
 use App\Models\RecycleOrderItem;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
 {
     public function __construct(
-        protected InventoryService $inventoryService,
-        protected NotificationService $notificationService,
+        protected \App\Services\InventoryService $inventoryService,
+        protected \App\Services\NotificationService $notificationService,
     ) {}
 
     /**
@@ -81,8 +81,8 @@ class OrderService
                 $order->rejection_reason = $data['rejection_reason'];
             }
 
-            if ($newStatus === OrderStatus::ACCEPTED && auth()->check()) {
-                $order->handled_by = auth()->id();
+            if ($newStatus === OrderStatus::ACCEPTED && Auth::check()) {
+                $order->handled_by = Auth::id();
             }
 
             // Update actual weights if provided
